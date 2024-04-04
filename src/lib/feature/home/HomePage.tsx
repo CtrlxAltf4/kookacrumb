@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Facebook } from "lucide-react";
 import AutoPlayCarousel from "./AutoPlayCarousel";
+import { Footer } from "../shared/Footer";
 
 export const HomePage = () => {
   return (
@@ -143,15 +144,7 @@ export const HomePage = () => {
           />
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center gap-8">
-        <p className="text-3xl text-primary font-bold text-center uppercase">
-          Lynch’s gourmet breadcrumbs
-        </p>
-        <Facebook />
-        <p className="text-xl text-primary text-center font-semibold">
-          FAQ STORE POLICIES CONTACT PRIVACY POLICY
-        </p>
-      </div>
+      <Footer />
     </>
   );
 };
