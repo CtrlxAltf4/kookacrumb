@@ -85,7 +85,7 @@ export const HomePage = () => {
           <p className="text-3xl text-primary font-semibold">
             QUICK AND EASY CRUMBED FISH THAT KIDS WILL LOVE!
           </p>
-          <p className="text-xs text-gray-500">
+          <p className="text-sm text-gray-500">
             This recipe is extremely easy to make and should only take roughly
             30 minutes to whip up. Using our flavour breadcrumbs will help
             distract children from the fishy flavour which can often be the
@@ -102,42 +102,42 @@ export const HomePage = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 grid-flow-row gap-8">
         <div className="flex flex-col md:flex-row gap-4">
-          <p className="text-xs text-primary font-medium">PANKO BREADCRUMB</p>
+          <p className="text-sm text-primary font-medium">PANKO BREADCRUMB</p>
           <Image
-            src="/breadcrumb/breadcrumb1.jpg"
+            src="/breadcrumb/breadcrumb1.png"
             alt="breadcrumb1"
             height={500}
             width={500}
           />
         </div>
         <div className="flex flex-col md:flex-row gap-4">
-          <p className="text-xs text-primary font-medium uppercase">
+          <p className="text-sm text-primary font-medium uppercase">
             Gluten free herb & garlic breadcrumb
           </p>
           <Image
-            src="/breadcrumb/breadcrumb2.jpg"
+            src="/breadcrumb/breadcrumb2.png"
             alt="breadcrumb1"
             height={500}
             width={500}
           />
         </div>
         <div className="flex flex-col md:flex-row gap-4">
-          <p className="text-xs text-primary font-medium uppercase">
+          <p className="text-sm text-primary font-medium uppercase">
             Gluten free lemon pepper breadcrumb
           </p>
           <Image
-            src="/breadcrumb/breadcrumb3.jpg"
+            src="/breadcrumb/breadcrumb3.png"
             alt="breadcrumb1"
             height={500}
             width={500}
           />
         </div>
         <div className="flex flex-col md:flex-row gap-4">
-          <p className="text-xs text-primary font-medium">
+          <p className="text-sm text-primary font-medium">
             MEDITERRANEAN BREADCRUMB
           </p>
           <Image
-            src="/breadcrumb/breadcrumb4.jpg"
+            src="/breadcrumb/breadcrumb4.png"
             alt="breadcrumb1"
             height={500}
             width={500}

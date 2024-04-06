@@ -35,9 +35,14 @@ export const Navbar = () => {
                   {" "}
                   <Link href="/story">OUR STORY</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>OUR BREADCRUMBS</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href="/our-breadcrumb">OUR BREADCRUMBS</Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem>SHOP</DropdownMenuItem>
-                <DropdownMenuItem>RECEIPES</DropdownMenuItem>
+                <DropdownMenuItem>
+                  {" "}
+                  <Link href="/recipes">RECEIPES</Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem>STOCKISTS</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -51,9 +56,13 @@ export const Navbar = () => {
               <Link href="/story">
                 <p className="text-primary font-semibold">OUR STORY</p>
               </Link>
-              <p className="text-primary font-semibold">OUR BREADCRUMBS</p>
+              <Link href="/our-breadcrumb">
+                <p className="text-primary font-semibold">OUR BREADCRUMBS</p>
+              </Link>
               <p className="text-primary font-semibold">SHOP</p>
-              <p className="text-primary font-semibold">RECEIPES</p>
+              <Link href="/recipes">
+                <p className="text-primary font-semibold">RECEIPES</p>
+              </Link>
               <p className="text-primary font-semibold">STOCKISTS</p>
             </div>
           </div>

@@ -77,7 +77,6 @@ const StoryPage = () => {
       <div className="flex justify-center">
         <Button variant="outline">LEARN MORE ABOUT OUT BREADCRUMB</Button>
       </div>
-      <Footer />
     </>
   );
 };
