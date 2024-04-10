@@ -28,6 +28,7 @@ const Dashboard = () => {
       console.log(loginData?.error);
     } else {
       router?.push("/");
+      router.refresh();
     }
   };
 

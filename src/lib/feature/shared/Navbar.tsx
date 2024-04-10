@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import Image from "next/image";
 import { ChevronDown, Menu, ShoppingCart } from "lucide-react";
 import {
@@ -13,9 +13,9 @@ import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { SignoutButton } from "./SignoutButton";
 
 export const Navbar = async () => {
-  const router = useRouter();
   const session = await getServerSession(authOptions);
   return (
     <div className="flex flex-col gap-8">
@@ -55,11 +55,7 @@ export const Navbar = async () => {
             </DropdownMenu>
           </div>
         </div>
-        {session?.user ? (
-          <Button onClick={() => signOut()}>Sign Out</Button>
-        ) : (
-          <Button onClick={() => router?.push("/")}>Sign In</Button>
-        )}
+        {session?.user ? <SignoutButton /> : <Link href="/login">Sign In</Link>}
       </div>
       <div className="flex justify-center">
         <div className="flex gap-20 items-center">
