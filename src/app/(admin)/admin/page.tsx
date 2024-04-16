@@ -59,6 +59,15 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import AddProductModal from "@/lib/feature/product/AddProductModal";
 
 export default function Dashboard() {
   return (
@@ -296,12 +305,7 @@ export default function Dashboard() {
                     Export
                   </span>
                 </Button>
-                <Button size="sm" className="h-7 gap-1">
-                  <PlusCircle className="h-3.5 w-3.5" />
-                  <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                    Add Product
-                  </span>
-                </Button>
+                <AddProductModal />
               </div>
             </div>
             <TabsContent value="all">
