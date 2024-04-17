@@ -37,12 +37,13 @@ export const AddProductModal = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         {" "}
-        <Button size="sm" className="h-7 gap-1">
+        {/* <Button size="sm" className="h-7 gap-1"> */}
+        <div className="flex gap-1 items-center">
           <PlusCircle className="h-3.5 w-3.5" />
           <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
             Add Product
           </span>
-        </Button>
+        </div>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -50,15 +51,15 @@ export const AddProductModal = () => {
           <DialogDescription>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="flex flex-col gap-4 mt-8">
-                <div>
+                <div className="flex flex-col gap-1">
                   <p>Enter product name</p>
                   <Input {...register("name")} />
                 </div>
-                <div>
+                <div className="flex flex-col gap-1">
                   <p>Enter product description</p>
                   <Textarea {...register("description")} />
                 </div>
-                <div>
+                <div className="flex flex-col gap-1">
                   <p>Enter price</p>
                   <Input type="number" {...register("price")} />
                 </div>
