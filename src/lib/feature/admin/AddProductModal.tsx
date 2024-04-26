@@ -19,11 +19,13 @@ import axios from "axios";
 import { ChangeEvent, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useToast } from "@/components/ui/use-toast";
 
 export const AddProductModal = () => {
   const bucket = "images";
   const [image, setImage] = useState("");
   const supabase = createClientComponentClient();
+  const { toast } = useToast();
 
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
@@ -47,8 +49,12 @@ export const AddProductModal = () => {
       queryClient.invalidateQueries({ queryKey: ["getProducts"] });
       // Perform actions upon successful mutation
     },
-    onError: (error) => {
-      console.error("Mutation error:", error);
+    onError: (error: { response: { data: { message: string } } }) => {
+      const errorMessage = error?.response?.data?.message;
+      toast({
+        title: "Error",
+        description: errorMessage,
+      });
     },
   });
 
@@ -73,7 +79,6 @@ export const AddProductModal = () => {
     mutate({
       ...getValues(),
       image: image,
-      price: Number(getValues()?.price),
     });
   };
   const onSubmitDebounced = debounce(onSubmit, 2000);
