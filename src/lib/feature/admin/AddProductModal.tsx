@@ -20,6 +20,7 @@ import { ChangeEvent, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useToast } from "@/components/ui/use-toast";
+import { ProductAddData, addProject } from "@/utils/apiFunctions";
 
 export const AddProductModal = () => {
   const bucket = "images";
@@ -35,11 +36,6 @@ export const AddProductModal = () => {
     getValues,
     formState: { errors },
   } = useForm();
-
-  const addProject = async (data: any) => {
-    const res = await axios.post(`/api/product`, data);
-    return res;
-  };
 
   const { mutate } = useMutation({
     mutationFn: addProject,
@@ -79,7 +75,7 @@ export const AddProductModal = () => {
     mutate({
       ...getValues(),
       image: image,
-    });
+    } as ProductAddData);
   };
   const onSubmitDebounced = debounce(onSubmit, 2000);
 
