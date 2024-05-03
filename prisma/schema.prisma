@@ -22,16 +22,23 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
+model ProductImage {
+  id        Int     @id @default(autoincrement())
+  url       String
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+}
+
 model Product {
-  id           Int           @id @default(autoincrement())
-  name         String        @unique
+  id           Int            @id @default(autoincrement())
+  name         String         @unique
   description  String?
   price        Float
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  isActive     Boolean       @default(true)
-  image        String?
-  totalSales   Int           @default(0)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  isActive     Boolean        @default(true)
+  images       ProductImage[]
+  totalSales   Int            @default(0)
   productViews ProductView[]
 }
 

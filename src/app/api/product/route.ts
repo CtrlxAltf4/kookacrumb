@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     }
     try{
         const body = await req.json()
-        const {name, description, price, image} = body
+        const {name, description, price, images} = body
         
         if(!name){
             return NextResponse.json({ message: 'product name compulsory'}, {status: 409})
@@ -27,7 +27,9 @@ export async function POST(req: NextRequest) {
                 name,
                 description,
                 price: parseInt(price),
-                image
+                images: {
+                    create: images.map(url => ({ url }))
+                  }
             }
         })
 

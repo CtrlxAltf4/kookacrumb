@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import debounce from "lodash/debounce";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
@@ -21,10 +21,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useToast } from "@/components/ui/use-toast";
 import { ProductAddData, addProject } from "@/utils/apiFunctions";
+import Image from "next/image";
 
 export const AddProductModal = () => {
   const bucket = "images";
-  const [image, setImage] = useState("");
+  const [images, setImages] = useState<string[]>([]);
   const supabase = createClientComponentClient();
   const { toast } = useToast();
 
@@ -34,8 +35,18 @@ export const AddProductModal = () => {
     register,
     handleSubmit,
     getValues,
+    control,
     formState: { errors },
   } = useForm();
+
+  const {
+    fields: imageFields,
+    append,
+    remove,
+  } = useFieldArray({
+    control,
+    name: "images",
+  });
 
   const { mutate } = useMutation({
     mutationFn: addProject,
@@ -60,22 +71,22 @@ export const AddProductModal = () => {
     const { data, error } = await supabase.storage
       .from(bucket)
       .upload(`${randomNo}-${image[0]?.name}`, image[0]);
-
     if (data) {
-      setImage(
-        `${process.env["NEXT_PUBLIC_SUPABASE_URL"]}/storage/v1/object/public/${bucket}/${data?.path}`
-      );
+      setImages([
+        ...images,
+        `${process.env["NEXT_PUBLIC_SUPABASE_URL"]}/storage/v1/object/public/${bucket}/${data?.path}`,
+      ]);
     }
     if (error) {
       console.error(error?.message);
     }
   };
-
   const onSubmit = async () => {
-    mutate({
-      ...getValues(),
-      image: image,
-    } as ProductAddData);
+    console.log("hello", images);
+    // mutate({
+    //   ...getValues(),
+    //   // image: image,
+    // } as ProductAddData);
   };
   const onSubmitDebounced = debounce(onSubmit, 2000);
 
@@ -111,12 +122,34 @@ export const AddProductModal = () => {
                 </div>
                 <div className="flex flex-col gap-1">
                   <p>Upload Image</p>
-                  <Input
-                    accept="image/*"
-                    type="file"
-                    onChange={(e) => onImageUpload(e)}
-                  />
+                  {imageFields.map((_, index) => (
+                    <div key={index}>
+                      <div className="flex flex-col gap-1">
+                        <input
+                          accept="image/*"
+                          type="file"
+                          onChange={(e) => onImageUpload(e)}
+                          multiple
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const imagesAfterRemoval = images.splice(index, 1);
+                          setImages(imagesAfterRemoval);
+
+                          remove(index);
+                        }}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                  <Button className="w-fit" onClick={() => append({})}>
+                    Add Images
+                  </Button>
                 </div>
+
                 <Button>Submit</Button>
               </div>
             </form>
