@@ -26,10 +26,8 @@ export async function POST(req: NextRequest) {
             data: {
                 name,
                 description,
-                price: parseInt(price),
-                images: {
-                    create: images.map(url => ({ url }))
-                  }
+                price: Number(price),
+                images
             }
         })
 

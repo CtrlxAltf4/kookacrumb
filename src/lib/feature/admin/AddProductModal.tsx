@@ -1,7 +1,6 @@
 "use client";
 
 import { useForm, useFieldArray } from "react-hook-form";
-import debounce from "lodash/debounce";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,13 +14,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { PlusCircle } from "lucide-react";
-import axios from "axios";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useToast } from "@/components/ui/use-toast";
 import { ProductAddData, addProject } from "@/utils/apiFunctions";
-import Image from "next/image";
+
+const formDefaultValues = {
+  name: "",
+  description: "",
+  price: 0,
+  images: [{}],
+};
 
 export const AddProductModal = () => {
   const bucket = "images";
@@ -33,11 +37,13 @@ export const AddProductModal = () => {
   const queryClient = useQueryClient();
   const {
     register,
-    handleSubmit,
     getValues,
     control,
     formState: { errors },
-  } = useForm();
+    reset,
+  } = useForm({
+    defaultValues: formDefaultValues,
+  });
 
   const {
     fields: imageFields,
@@ -54,6 +60,7 @@ export const AddProductModal = () => {
     onSuccess: (data) => {
       setOpen(false);
       queryClient.invalidateQueries({ queryKey: ["getProducts"] });
+      reset(formDefaultValues);
       // Perform actions upon successful mutation
     },
     onError: (error: { response: { data: { message: string } } }) => {
@@ -81,14 +88,14 @@ export const AddProductModal = () => {
       console.error(error?.message);
     }
   };
-  const onSubmit = async () => {
-    console.log("hello", images);
-    // mutate({
-    //   ...getValues(),
-    //   // image: image,
-    // } as ProductAddData);
+
+  const onSubmit = (e: MouseEvent) => {
+    e.preventDefault();
+    mutate({
+      ...getValues(),
+      images: images,
+    } as unknown as ProductAddData);
   };
-  const onSubmitDebounced = debounce(onSubmit, 2000);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -106,7 +113,7 @@ export const AddProductModal = () => {
         <DialogHeader>
           <DialogTitle>Add Product</DialogTitle>
           <DialogDescription>
-            <form onSubmit={handleSubmit(onSubmitDebounced)}>
+            <form>
               <div className="flex flex-col gap-4 mt-8">
                 <div className="flex flex-col gap-1">
                   <p>Enter product name</p>
@@ -120,37 +127,52 @@ export const AddProductModal = () => {
                   <p>Enter price</p>
                   <Input type="number" {...register("price")} />
                 </div>
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-2">
                   <p>Upload Image</p>
-                  {imageFields.map((_, index) => (
-                    <div key={index}>
-                      <div className="flex flex-col gap-1">
-                        <input
-                          accept="image/*"
-                          type="file"
-                          onChange={(e) => onImageUpload(e)}
-                          multiple
-                        />
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const imagesAfterRemoval = images.splice(index, 1);
-                          setImages(imagesAfterRemoval);
+                  <div className="flex flex-col gap-4">
+                    {imageFields.map((_, index) => (
+                      <div key={index}>
+                        <div className="flex flex-col gap-1">
+                          <input
+                            accept="image/*"
+                            type="file"
+                            onChange={(e) => onImageUpload(e)}
+                            multiple
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            let imagesAfterRemoval = [...images];
+                            imagesAfterRemoval.splice(index, 1);
 
-                          remove(index);
-                        }}
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  ))}
-                  <Button className="w-fit" onClick={() => append({})}>
-                    Add Images
+                            setImages(imagesAfterRemoval);
+
+                            remove(index);
+                          }}
+                        >
+                          Remove Image
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  <Button
+                    className="w-fit mt-4"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      append({});
+                    }}
+                  >
+                    Add More Images
                   </Button>
                 </div>
 
-                <Button>Submit</Button>
+                <Button
+                  disabled={imageFields?.length !== images?.length}
+                  onClick={onSubmit}
+                >
+                  Submit
+                </Button>
               </div>
             </form>
           </DialogDescription>
