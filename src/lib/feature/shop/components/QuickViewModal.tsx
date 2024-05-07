@@ -29,7 +29,12 @@ export const QuickViewModal = (props: {
   const { mutate: addToCartMutate } = useMutation({
     mutationFn: addToCart,
 
-    onSuccess: (data) => {},
+    onSuccess: (data) => {
+      toast({
+        title: "Success",
+        description: data?.data?.message,
+      });
+    },
     onError: (error: { response: { data: { message: string } } }) => {
       const errorMessage = error?.response?.data?.message;
       toast({

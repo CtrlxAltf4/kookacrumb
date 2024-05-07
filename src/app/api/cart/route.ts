@@ -60,14 +60,14 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions)
-    const userId = Number((session.user as User)?.id)
+    const userId = Number((session?.user as User)?.id)
 
     if (!session?.user) {
         return NextResponse.json({ message: 'User not authenticated' }, { status: 401 })
     }
 
     try {
-        const cartItems = await prisma.cartItem.findMany({
+        const cartItems = await prisma?.cartItem?.findMany({
             where: {
                 userId: userId
             },

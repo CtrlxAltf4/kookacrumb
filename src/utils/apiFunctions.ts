@@ -42,6 +42,11 @@ export const setProjectView = async (data: ProductView) => {
   return res;
 };
 
+export const getProjectView = async () => {
+  const res = await axios.get(`/api/product-view`);
+  return res;
+};
+
 
 export const addToCart = async (data: AddCartData) => {
   const res = await axios.post(`/api/cart`, data);
