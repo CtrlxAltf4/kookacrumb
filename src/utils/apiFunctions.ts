@@ -23,7 +23,7 @@ export interface ProductView{
 }
 
 export interface AddCartData {
-  productId: string;
+  productId: number;
   quantity: number;
 }
 

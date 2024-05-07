@@ -31,9 +31,8 @@ import {
 } from "@/components/ui/table";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { QueryKey, useQuery } from "@tanstack/react-query";
+
+import { useQuery } from "@tanstack/react-query";
 import AddProductModal from "./AddProductModal";
 import { getProducts } from "@/utils/apiFunctions";
 

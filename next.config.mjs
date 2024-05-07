@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 
-const supabaseURL = 'gyfetezkqpcyvsjhmaqn.supabase.co'
+const supabaseURL = 'sgssochabejdkykyprxw.supabase.co'
 
 const nextConfig = {
     experimental: {
