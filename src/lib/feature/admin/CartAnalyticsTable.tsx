@@ -35,7 +35,7 @@ import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import AddProductModal from "./AddProductModal";
 import { getAllCart, getProducts, getProjectView } from "@/utils/apiFunctions";
-import { CartItem, Product, ProductView } from "@prisma/client";
+import { CartItem, Product } from "@prisma/client";
 import { useEffect, useState } from "react";
 
 interface ProductData {
@@ -49,8 +49,14 @@ interface ProductData {
   images: string[];
 }
 
+interface TableData {
+  productId: number;
+  product: Product;
+  count: number;
+}
+
 export const CartAnalyticsTable = () => {
-  const [tableData, setTableData] = useState();
+  const [tableData, setTableData] = useState<TableData[]>();
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["getAllCart"],
     queryFn: getAllCart,
@@ -60,27 +66,30 @@ export const CartAnalyticsTable = () => {
 
   useEffect(() => {
     // First, let's create a map to count occurrences of each product
-    const productCountMap = {};
+    const productCountMap: Record<string, number> = {};
     cartDataArray?.forEach((item: CartItem) => {
       const productId = item.productId;
-      productCountMap[productId] = (productCountMap[productId] || 0) + 1;
+      productCountMap[productId as unknown as keyof typeof productCountMap] =
+        (productCountMap[productId] || 0) + 1;
     });
 
     // Now, let's create the desired output array
-    const resultArray = [];
-    cartDataArray?.forEach((item: CartItem) => {
-      const productId = item.productId;
-      // Check if we have already added this product to the result array
-      if (!resultArray.some((element) => element.productId === productId)) {
-        // If not added, then add it along with its count
-        const productObject = {
-          productId: productId,
-          product: item?.productItem,
-          count: productCountMap[productId],
-        };
-        resultArray.push(productObject);
+    const resultArray: TableData[] = [];
+    cartDataArray?.forEach(
+      (item: { productId: number; productItem: Product }) => {
+        const productId = item.productId;
+        // Check if we have already added this product to the result array
+        if (!resultArray.some((element) => element.productId === productId)) {
+          // If not added, then add it along with its count
+          const productObject = {
+            productId: productId,
+            product: item?.productItem,
+            count: productCountMap[productId],
+          };
+          resultArray.push(productObject);
+        }
       }
-    });
+    );
     setTableData(resultArray);
   }, [JSON.stringify(cartDataArray)]);
 
@@ -144,12 +153,12 @@ export const CartAnalyticsTable = () => {
                     </TableHead>
                     <TableHead>ID</TableHead>
                     <TableHead>Name</TableHead>
-                    <TableHead>Interest</TableHead>
+                    <TableHead>Cart count</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {tableData?.map?.((item) => (
-                    <TableRow key={item?.id}>
+                    <TableRow key={item?.productId}>
                       <TableCell className="hidden sm:table-cell">
                         <Image
                           alt="Product image"
